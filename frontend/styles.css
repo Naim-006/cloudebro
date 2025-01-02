@@ -1,33 +1,155 @@
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+/* Container and Form Styles */
+.container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 0.5s ease;
 }
 
-input, button {
-  padding: 10px;
-  font-size: 16px;
+.form-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
 }
 
-#fileShowcase img, #fileShowcase video {
-  max-width: 200px;
-  margin: 10px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-a {
-  color: #007BFF;
-  text-decoration: none;
-  cursor: pointer;
+.input-field {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
-a:hover {
-  text-decoration: underline;
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #74ebd5;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #57c3b1;
+}
+
+.switch-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.switch-link a {
+    color: #74ebd5;
+    text-decoration: none;
+}
+
+.switch-link a:hover {
+    text-decoration: underline;
+}
+
+/* Profile Section */
+#profile-section h2 {
+    text-align: center;
+    color: #555;
+}
+
+.username-highlight {
+    color: #74ebd5;
+    font-weight: bold;
+}
+
+.logout-btn {
+    margin: 10px 0 20px;
+    background: #f55c47;
+}
+
+.logout-btn:hover {
+    background: #e14a36;
+}
+
+/* Upload Section */
+.upload-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.file-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.upload-btn {
+    background: #74ebd5;
+    padding: 10px 15px;
+}
+
+.uploaded-files {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#uploaded-files img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.uploaded-files div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.uploaded-files a {
+    color: #74ebd5;
+    text-decoration: none;
+}
+
+.uploaded-files a:hover {
+    text-decoration: underline;
+}
+
+/* No Files Message */
+.no-files {
+    text-align: center;
+    color: #777;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
