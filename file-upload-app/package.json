@@ -1,9 +1,8 @@
 {
   "name": "file-upload-app",
   "version": "1.0.0",
-  "main": "backend/app.js",
+  "main": "index.html",
   "scripts": {
-    "start": "node backend/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
