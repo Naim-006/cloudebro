@@ -1,7 +1,7 @@
 {
   "name": "file-upload-app",
   "version": "1.0.0",
-  "main": "app.js",  // Ensure this is your correct entry point
+  "main": "index.html",  // Ensure this is your correct entry point
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
