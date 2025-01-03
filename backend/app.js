@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const path = require('path'); // Remove the duplicate import
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files statically
-app.use(express.static(path.join(__dirname, 'frontend'))); // Serve frontend assets from the 'frontend' directory
+app.use(express.static(path.join(__dirname, 'frontend', 'build'))); // Serve frontend assets from the build directory
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -30,9 +30,9 @@ const fileRoutes = require('./routes/file');
 app.use('/auth', authRoutes);
 app.use('/files', fileRoutes);
 
-// Serve React or other frontend assets from the frontend directory
+// Serve React frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 // Start server
