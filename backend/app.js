@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files statically
-app.use(express.static(path.join(__dirname, 'frontend', 'build'))); // Serve frontend assets from the build directory
+app.use(express.static(path.join(__dirname, 'frontend', 'build'))); // Serve React frontend assets from 'frontend/build' directory
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
