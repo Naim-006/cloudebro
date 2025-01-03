@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files statically
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'frontend'))); // Serve frontend assets from the 'frontend' directory
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -31,9 +31,6 @@ app.use('/auth', authRoutes);
 app.use('/files', fileRoutes);
 
 // Serve React or other frontend assets from the frontend directory
-app.use(express.static(path.join(__dirname, 'frontend')));
-
-// Serve React or other frontend assets from frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
