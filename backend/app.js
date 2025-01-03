@@ -30,9 +30,12 @@ const fileRoutes = require('./routes/file');
 app.use('/auth', authRoutes);
 app.use('/files', fileRoutes);
 
-// Serve React or other frontend assets from public
+// Serve React or other frontend assets from the frontend directory
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// Serve React or other frontend assets from frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 // Start server
