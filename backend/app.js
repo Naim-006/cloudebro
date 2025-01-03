@@ -11,9 +11,13 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: '*', // Allow all origins or specify allowed domains
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files statically
-app.use(express.static(path.join(__dirname, 'frontend', 'build'))); // Serve React frontend assets from 'frontend/build' directory
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -21,7 +25,10 @@ mongoose.connect(process.env.MONGO_URI, {
     useUnifiedTopology: true,
 })
     .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit process with error code
+    });
 
 // Routes
 const authRoutes = require('./routes/auth');
@@ -30,9 +37,10 @@ const fileRoutes = require('./routes/file');
 app.use('/auth', authRoutes);
 app.use('/files', fileRoutes);
 
-// Serve React frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });
 
 // Start server
