@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
+
 // Load environment variables
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: '*', // Update this to specific domains in production for security
+    origin: process.env.CORS_ORIGIN || 'https://clouderbro.netlify.app/', // Use specific domains in production
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
@@ -23,7 +24,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve u
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(process.env.MONGO_URI || 'your-default-mongo-uri', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -34,21 +35,21 @@ mongoose
   });
 
 // Routes
-const authRoutes = require('./routes/auth'); // Make sure `routes/auth` exists
-const fileRoutes = require('./routes/file'); // Make sure `routes/file` exists
+const authRoutes = require('./routes/auth'); // Ensure these files exist
+const fileRoutes = require('./routes/file');
 
 app.use('/auth', authRoutes);
 app.use('/files', fileRoutes);
 
-// Health Check Route (for Render)
+// Health Check Route (for Render/Glitch)
 app.get('/', (req, res) => {
-  res.send('Backend is running');
+  res.status(200).json({ status: 'Backend is running', uptime: process.uptime() });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something went wrong!');
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 // Start server
