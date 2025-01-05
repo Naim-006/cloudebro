@@ -43,17 +43,19 @@
     </div>
 
     <script>
+        const BACKEND_URL = 'https://cloude-bro.glitch.me/backend'; // Base URL for backend
+
         async function register() {
             const username = document.getElementById('register-username').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
 
             try {
-                const response = await axios.post('http://localhost:5000/auth/register', { username, email, password });
+                const response = await axios.post(`${BACKEND_URL}/auth/register`, { username, email, password });
                 alert(response.data.message);
                 showLogin();
             } catch (error) {
-                alert(error.response.data.error || 'Error occurred');
+                alert(error.response?.data?.error || 'Error occurred');
             }
         }
 
@@ -62,68 +64,50 @@
             const password = document.getElementById('login-password').value;
 
             try {
-                const response = await axios.post('http://localhost:5000/auth/login', { username, password });
+                const response = await axios.post(`${BACKEND_URL}/auth/login`, { username, password });
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.userId);
+                localStorage.setItem('username', response.data.username);
                 showProfile();
                 fetchUploadedFiles();
             } catch (error) {
-                alert(error.response.data.error || 'Error occurred');
+                alert(error.response?.data?.error || 'Error occurred');
             }
         }
 
         async function uploadFiles() {
-    const fileInput = document.getElementById('file-input');
-    const files = fileInput.files;
+            const fileInput = document.getElementById('file-input');
+            const files = fileInput.files;
 
-    if (files.length === 0) {
-        alert('Please select files to upload.');
-        return;
-    }
+            if (files.length === 0) {
+                alert('Please select files to upload.');
+                return;
+            }
 
-    const formData = new FormData();
-    for (let file of files) {
-        formData.append('files', file);
-    }
-    formData.append('userId', localStorage.getItem('userId'));
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files', file);
+            }
+            formData.append('userId', localStorage.getItem('userId'));
 
-    try {
-        const response = await axios.post('http://localhost:5000/files/upload', formData, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-        });
-        alert(response.data.message);
-        fetchUploadedFiles();
-    } catch (error) {
-        alert(error.response.data.error || 'Error occurred');
-    }
-}
-
-// Function to show file previews
-function showFilePreviews() {
-    const fileInput = document.getElementById('file-input');
-    const previewContainer = document.getElementById('file-previews');
-    previewContainer.innerHTML = ''; // Clear previous previews
-
-    Array.from(fileInput.files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.maxWidth = '200px';
-            img.style.margin = '10px';
-            previewContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file); // Read file as base64
-    });
-}
-
+            try {
+                const response = await axios.post(`${BACKEND_URL}/files/upload`, formData, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                });
+                alert(response.data.message);
+                fetchUploadedFiles();
+            } catch (error) {
+                alert(error.response?.data?.error || 'Error occurred');
+            }
+        }
 
         async function fetchUploadedFiles() {
             try {
                 const userId = localStorage.getItem('userId');
-                const response = await axios.get(`http://localhost:5000/files/${userId}`, {
+                const response = await axios.get(`${BACKEND_URL}/files/${userId}`, {
                     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
                 });
+
                 const uploadedFiles = document.getElementById('uploaded-files');
                 uploadedFiles.innerHTML = '';
 
@@ -134,13 +118,13 @@ function showFilePreviews() {
                         const fileItem = document.createElement('div');
                         fileItem.innerHTML = `
                             <p>${file.filename}</p>
-                            <a href="http://localhost:5000/${file.path}" target="_blank">Download</a>
+                            <a href="${BACKEND_URL}/${file.path}" target="_blank">Download</a>
                         `;
                         uploadedFiles.appendChild(fileItem);
                     });
                 }
             } catch (error) {
-                alert(error.response.data.error || 'Error occurred');
+                alert(error.response?.data?.error || 'Error occurred');
             }
         }
 
